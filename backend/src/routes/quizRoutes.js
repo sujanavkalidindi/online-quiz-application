@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { listQuizzes, getQuiz, createQuiz, updateQuiz, deleteQuiz, listQuestions, listManageQuestions, createQuestion, updateQuestion, deleteQuestion } from '../controllers/quizController.js';
+import { requireAdminKey } from '../middleware/adminAuth.js';
+const router = Router();
+router.get('/', listQuizzes);
+router.post('/', requireAdminKey, createQuiz);
+router.get('/:id', getQuiz);
+router.put('/:id', requireAdminKey, updateQuiz);
+router.delete('/:id', requireAdminKey, deleteQuiz);
+router.get('/:id/questions', listQuestions);
+router.get('/:id/questions/manage', requireAdminKey, listManageQuestions);
+router.post('/:id/questions', requireAdminKey, createQuestion);
+export default router;

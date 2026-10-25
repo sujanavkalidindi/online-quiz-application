@@ -1,0 +1,30 @@
+{
+  "info": {
+    "name": "Online Quiz API",
+    "description": "CRUD and scoring API for the Online Quiz Application. Set baseUrl and adminKey collection variables before use.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": { "type": "apikey", "apikey": [{ "key": "key", "value": "x-admin-key", "type": "string" }, { "key": "value", "value": "{{adminKey}}", "type": "string" }, { "key": "in", "value": "header", "type": "string" }] },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:5000" }, { "key": "adminKey", "value": "replace-with-ADMIN_API_KEY" }, { "key": "quizId", "value": "replace-with-quiz-id" }, { "key": "questionId", "value": "replace-with-question-id" }, { "key": "resultId", "value": "replace-with-result-id" }],
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/api/health" } },
+    { "name": "Quizzes", "item": [
+      { "name": "List quizzes", "request": { "method": "GET", "url": "{{baseUrl}}/api/quizzes" } },
+      { "name": "Quiz details", "request": { "method": "GET", "url": "{{baseUrl}}/api/quizzes/{{quizId}}" } },
+      { "name": "Create quiz", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Sample quiz\",\n  \"description\": \"A short demo quiz.\",\n  \"category\": \"JavaScript\",\n  \"durationMinutes\": 10\n}" }, "url": "{{baseUrl}}/api/quizzes" } },
+      { "name": "Update quiz", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated sample quiz\",\n  \"durationMinutes\": 12\n}" }, "url": "{{baseUrl}}/api/quizzes/{{quizId}}" } },
+      { "name": "Delete quiz", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/quizzes/{{quizId}}" } }
+    ] },
+    { "name": "Questions", "item": [
+      { "name": "List public questions (no correct answers)", "request": { "method": "GET", "url": "{{baseUrl}}/api/quizzes/{{quizId}}/questions" } },
+      { "name": "Add question", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"prompt\": \"Which value is true?\",\n  \"options\": [\"true\", \"false\", \"null\"],\n  \"correctOption\": 0,\n  \"marks\": 1\n}" }, "url": "{{baseUrl}}/api/quizzes/{{quizId}}/questions" } },
+      { "name": "Update question", "request": { "method": "PUT", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"prompt\": \"Updated question text?\",\n  \"options\": [\"A\", \"B\"],\n  \"correctOption\": 1,\n  \"marks\": 2\n}" }, "url": "{{baseUrl}}/api/questions/{{questionId}}" } },
+      { "name": "Delete question", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/questions/{{questionId}}" } }
+    ] },
+    { "name": "Results", "item": [
+      { "name": "Submit answers (server scores this payload)", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"quizId\": \"{{quizId}}\",\n  \"studentName\": \"Alex Morgan\",\n  \"answers\": [\n    { \"questionId\": \"{{questionId}}\", \"selectedOption\": 0 }\n  ]\n}" }, "url": "{{baseUrl}}/api/results" } },
+      { "name": "List recent results", "request": { "method": "GET", "url": "{{baseUrl}}/api/results" } },
+      { "name": "Result details", "request": { "method": "GET", "url": "{{baseUrl}}/api/results/{{resultId}}" } }
+    ] }
+  ]
+}
